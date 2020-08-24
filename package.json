@@ -1,0 +1,20 @@
+{
+  "name": "graphql-basic-concepts",
+  "version": "1.0.0",
+  "description": "Basics of queries, mutations and subscription.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js --exec babel-node",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "graphql"
+  ],
+  "author": "M Sanjay Sharma",
+  "license": "MIT",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "graphql-yoga": "^1.18.3"
+  }
+}

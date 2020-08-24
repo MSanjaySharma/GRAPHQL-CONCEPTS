@@ -21,6 +21,7 @@ export const typeDefs = `
         email: String!
         age: Int
         blogs: [Blog!]!
+        comments: [Comment!]!
     }
 
     type Blog {
@@ -29,10 +30,13 @@ export const typeDefs = `
         body: String!
         published: Boolean!
         author: User!
+        comments: [Comment!]!
     }
 
     type Comment {
         id: ID!
         text: String!
+        author: User!
+        blog: Blog!
     }
 `;

@@ -12,7 +12,6 @@ export const resolvers = {
     },
     add(parent, args, ctx, info) {
       if (args.a && args.b) {
-        //`Sum of ${args.a} and ${args.b} is ${args.a + args.b}`;
         return args.a + args.b;
       }
     },
@@ -73,11 +72,33 @@ export const resolvers = {
         return user.id === parent.author;
       });
     },
+    comments(parent, args, ctx, info) {
+      return comments.filter((comment) => {
+        return comment.blog === parent.id;
+      });
+    },
   },
   User: {
     blogs(parent, args, ctx, info) {
       return blogs.filter((blog) => {
         return blog.author === parent.id;
+      });
+    },
+    comments(parent, args, ctx, info) {
+      return comments.filter((comment) => {
+        return comment.author === parent.id;
+      });
+    },
+  },
+  Comment: {
+    author(parent, args, ctx, info) {
+      return users.find((user) => {
+        return user.id === parent.author;
+      });
+    },
+    blog(parent, arg, ctx, info) {
+      return blogs.find((blog) => {
+        return blog.id === parent.blog;
       });
     },
   },

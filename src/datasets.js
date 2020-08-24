@@ -30,7 +30,8 @@ export const blogs = [
 ];
 
 export const comments = [
-  { id: "comment_1", text: "awesome blog!!!" },
-  { id: "comment_2", text: "improve needed" },
-  { id: "comment_3", text: "I had a doubt" },
+  { id: "comment_1", text: "awesome blog!!!", author: "id_3", blog: "blog_2" },
+  { id: "comment_2", text: "improve needed", author: "id_2", blog: "blog_1" },
+  { id: "comment_3", text: "I had a doubt", author: "id_1", blog: "blog_3" },
+  { id: "comment_4", text: "This is a comment", author: "id_1", blog: "blog_2" },
 ];

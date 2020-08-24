@@ -28,3 +28,9 @@ export const blogs = [
     author: "id_1",
   },
 ];
+
+export const comments = [
+  { id: "comment_1", text: "awesome blog!!!" },
+  { id: "comment_2", text: "improve needed" },
+  { id: "comment_3", text: "I had a doubt" },
+];

@@ -1,4 +1,4 @@
-import { users, blogs } from "./datasets";
+import { users, blogs, comments } from "./datasets";
 
 //resolvers
 export const resolvers = {
@@ -62,6 +62,9 @@ export const resolvers = {
         body: "This is example content",
         published: false,
       };
+    },
+    comments(parent, args, ctx, info) {
+      return comments;
     },
   },
   Blog: {

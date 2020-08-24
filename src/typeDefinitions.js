@@ -12,6 +12,7 @@ export const typeDefs = `
         users(search: String): [User!]!
         blogDetails: Blog!
         blogs(search: String): [Blog!]!
+        comments: [Comment!]!
     }
 
     type User {
@@ -28,5 +29,10 @@ export const typeDefs = `
         body: String!
         published: Boolean!
         author: User!
+    }
+
+    type Comment {
+        id: ID!
+        text: String!
     }
 `;

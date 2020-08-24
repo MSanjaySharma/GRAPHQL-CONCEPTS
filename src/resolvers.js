@@ -64,4 +64,18 @@ export const resolvers = {
       };
     },
   },
+  Blog: {
+    author(parent, args, ctx, info) {
+      return users.find((user) => {
+        return user.id === parent.author;
+      });
+    },
+  },
+  User: {
+    blogs(parent, args, ctx, info) {
+      return blogs.filter((blog) => {
+        return blog.author === parent.id;
+      });
+    },
+  },
 };

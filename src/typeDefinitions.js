@@ -19,6 +19,7 @@ export const typeDefs = `
         name: String!
         email: String!
         age: Int
+        blogs: [Blog!]!
     }
 
     type Blog {
@@ -26,5 +27,6 @@ export const typeDefs = `
         title: String!
         body: String!
         published: Boolean!
+        author: User!
     }
 `;

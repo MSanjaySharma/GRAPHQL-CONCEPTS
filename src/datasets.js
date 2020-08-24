@@ -11,17 +11,20 @@ export const blogs = [
     title: "Football legends",
     body: "7 vs 13 it is!!!",
     published: false,
+    author: "id_2",
   },
   {
     id: "blog_2",
     title: "Alpha treatment",
     body: "A breakthrough in cancer treatment",
     published: false,
+    author: "id_3",
   },
   {
     id: "blog_3",
     title: "Programming for everybody",
     body: "Learn the right way",
     published: false,
+    author: "id_1",
   },
 ];

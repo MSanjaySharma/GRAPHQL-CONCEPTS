@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 
 //resolvers
 export const resolvers = {
+  //QUERIES
   Query: {
     greeting(parent, args, ctx, info) {
       if (args.name && args.company) {
@@ -67,6 +68,8 @@ export const resolvers = {
       return comments;
     },
   },
+
+  //MUTATIONS
   Mutation: {
     createUser(parent, args, ctx, info) {
       const emailCheck = users.some((user) => user.email === args.email);
@@ -124,6 +127,8 @@ export const resolvers = {
       return comment;
     },
   },
+
+  //REFERENCES
   Blog: {
     author(parent, args, ctx, info) {
       return users.find((user) => {

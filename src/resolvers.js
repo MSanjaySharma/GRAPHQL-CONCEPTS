@@ -1,4 +1,5 @@
 import { users, blogs, comments } from "./datasets";
+import { nanoid } from "nanoid";
 
 //resolvers
 export const resolvers = {
@@ -64,6 +65,25 @@ export const resolvers = {
     },
     comments(parent, args, ctx, info) {
       return comments;
+    },
+  },
+  Mutation: {
+    createUser(parent, args, ctx, info) {
+      const emailCheck = users.some((user) => user.email === args.email);
+      if (emailCheck) {
+        throw new Error(`Email already in Use`);
+      }
+
+      const user = {
+        id: nanoid(),
+        name: args.name,
+        email: args.email,
+        age: args.age,
+      };
+
+      users.push(user);
+
+      return user;
     },
   },
   Blog: {

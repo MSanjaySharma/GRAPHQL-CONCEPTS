@@ -86,7 +86,6 @@ export const resolvers = {
       return user;
     },
     createBlog(parent, args, ctx, info) {
-      console.log(args.author);
       const checkUser = users.some((user) => user.id === args.author);
 
       if (!checkUser) {
@@ -104,6 +103,25 @@ export const resolvers = {
       blogs.push(blog);
 
       return blog;
+    },
+    createComment(parent, args, ctx, info) {
+      const checkUser = users.some((user) => user.id === args.author);
+      const checkBlog = blogs.some(
+        (blog) => blog.id === args.blog && blog.published
+      );
+
+      if (!checkUser || !checkBlog) {
+        throw new Error(`Invalid User or Blog`);
+      }
+
+      const comment = {
+        id: nanoid(),
+        text: args.text,
+        author: args.author,
+        blog: args.blog,
+      };
+
+      return comment;
     },
   },
   Blog: {

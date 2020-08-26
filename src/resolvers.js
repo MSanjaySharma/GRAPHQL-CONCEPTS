@@ -85,6 +85,26 @@ export const resolvers = {
 
       return user;
     },
+    createBlog(parent, args, ctx, info) {
+      console.log(args.author);
+      const checkUser = users.some((user) => user.id === args.author);
+
+      if (!checkUser) {
+        throw new Error(`Invalid User`);
+      }
+
+      const blog = {
+        id: nanoid(),
+        title: args.title,
+        body: args.body,
+        published: args.published,
+        author: args.author,
+      };
+
+      blogs.push(blog);
+
+      return blog;
+    },
   },
   Blog: {
     author(parent, args, ctx, info) {

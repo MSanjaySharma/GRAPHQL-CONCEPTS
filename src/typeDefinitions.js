@@ -16,9 +16,28 @@ export const typeDefs = `
     }
 
     type Mutation {
-        createUser(name: String!, email: String!, age: Int): User!
-        createBlog(title: String!, body: String!, published: Boolean!, author: ID!): Blog!
-        createComment(text: String!, author: ID!, blog: ID!): Comment!
+        createUser(data: createUserInput): User!
+        createBlog(data: createBlogInput): Blog!
+        createComment(data: createCommentInput): Comment!
+    }
+
+    input createUserInput {
+        name: String!
+        email: String!
+        age: Int
+    }
+
+    input createBlogInput {
+        title: String!
+        body: String!
+        published: Boolean!
+        author: ID!
+    }
+
+    input createCommentInput {
+        text: String!
+        author: ID!
+        blog: ID!
     }
 
     type User {

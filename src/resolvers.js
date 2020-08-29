@@ -72,16 +72,16 @@ export const resolvers = {
   //MUTATIONS
   Mutation: {
     createUser(parent, args, ctx, info) {
-      const emailCheck = users.some((user) => user.email === args.email);
+      const emailCheck = users.some((user) => user.email === args.data.email);
       if (emailCheck) {
         throw new Error(`Email already in Use`);
       }
 
       const user = {
         id: nanoid(),
-        name: args.name,
-        email: args.email,
-        age: args.age,
+        name: args.data.name,
+        email: args.data.email,
+        age: args.data.age,
       };
 
       users.push(user);
@@ -97,10 +97,10 @@ export const resolvers = {
 
       const blog = {
         id: nanoid(),
-        title: args.title,
-        body: args.body,
-        published: args.published,
-        author: args.author,
+        title: args.data.title,
+        body: args.data.body,
+        published: args.data.published,
+        author: args.data.author,
       };
 
       blogs.push(blog);
@@ -108,9 +108,9 @@ export const resolvers = {
       return blog;
     },
     createComment(parent, args, ctx, info) {
-      const checkUser = users.some((user) => user.id === args.author);
+      const checkUser = users.some((user) => user.id === args.data.author);
       const checkBlog = blogs.some(
-        (blog) => blog.id === args.blog && blog.published
+        (blog) => blog.id === args.data.blog && blog.published
       );
 
       if (!checkUser || !checkBlog) {
@@ -119,9 +119,9 @@ export const resolvers = {
 
       const comment = {
         id: nanoid(),
-        text: args.text,
-        author: args.author,
-        blog: args.blog,
+        text: args.data.text,
+        author: args.data.author,
+        blog: args.data.blog,
       };
 
       return comment;

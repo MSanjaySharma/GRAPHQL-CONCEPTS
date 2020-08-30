@@ -4,7 +4,7 @@
   "description": "Basics of queries, mutations and subscription.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/index.js",
+    "start": "nodemon --ext js,graphql --exec babel-node src/index.js",
     "build": "babel src/index.js --out-file build/index-compiled.js"
   },
   "keywords": [

@@ -42,7 +42,6 @@ input updateBlogInput {
   title: String
   body: String
   published: Boolean
-  author: ID
 }
 
 input createCommentInput {
@@ -52,9 +51,7 @@ input createCommentInput {
 }
 
 input updateCommentInput {
-  text: String
-  author: ID
-  blog: ID
+  text: String!
 }
 
 type User {

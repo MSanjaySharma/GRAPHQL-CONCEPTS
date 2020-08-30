@@ -100,13 +100,6 @@ const Mutation = {
       if (typeof data.published === "string") {
         blog.published = data.published;
       }
-      if (typeof data.author === "string") {
-        const user = db.users.find((user) => user.id === data.author);
-        if (!user) {
-          throw new Error("No such user exists to Update the blog");
-        }
-        blog.author = data.author;
-      }
     }
 
     return blog;
@@ -155,26 +148,7 @@ const Mutation = {
       throw new Error("No such comments exists");
     }
 
-    if (typeof data.text === "string") {
-      comment.text = data.text;
-    }
-
-    if (typeof data.author === "string") {
-      const user = db.users.find((user) => user.id === data.author);
-
-      if (!user) {
-        throw new Error("No such user exists to Update the comment");
-      }
-      comment.author = data.author;
-    }
-
-    if (typeof data.blog === "string") {
-      const blog = db.blogs.find((blog) => blog.id === data.blog);
-      if (!blog) {
-        throw new Error("No such blog exists to Update the comment");
-      }
-      comment.blog = data.blog;
-    }
+    comment.text = data.text;
 
     return comment;
   },

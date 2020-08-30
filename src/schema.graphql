@@ -1,8 +1,5 @@
 type Query {
   greeting(name: String, company: String): String!
-  add(a: Float!, b: Float!): Float!
-  addArray(nums: [Float!]!): Float!
-  grades: [Int!]!
   userDetails: User!
   users(search: String): [User!]!
   blogDetails: Blog!
@@ -12,6 +9,7 @@ type Query {
 
 type Mutation {
   createUser(data: createUserInput): User!
+  updateUser(id: ID!, data: updateUserInput!): User!
   deleteUser(id: ID!): User!
   createBlog(data: createBlogInput): Blog!
   deleteBlog(id: ID!): Blog!
@@ -22,6 +20,12 @@ type Mutation {
 input createUserInput {
   name: String!
   email: String!
+  age: Int
+}
+
+input updateUserInput {
+  name: String
+  email: String
   age: Int
 }
 

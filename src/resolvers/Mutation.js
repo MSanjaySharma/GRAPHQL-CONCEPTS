@@ -17,6 +17,32 @@ const Mutation = {
     return user;
   },
 
+  updateUser(parent, { id, data }, { db }, info) {
+    const user = db.users.find((user) => user.id === id);
+
+    if (!user) {
+      throw new Error("User not Found");
+    }
+
+    if (typeof data.email === "string") {
+      const emailCheck = db.users.some((user) => user.email === data.email);
+      if (emailCheck) {
+        throw new Error(`Email already in Use`);
+      }
+      user.email = data.email;
+    }
+
+    if (typeof data.name === "string") {
+      user.name = data.name;
+    }
+
+    if (typeof data.age !== "undefined") {
+      user.age = data.age;
+    }
+
+    return user;
+  },
+
   deleteUser(parent, args, { db }, info) {
     const userIndex = db.users.findIndex((user) => user.id === args.id);
 

@@ -1,8 +1,6 @@
 type Query {
   greeting(name: String, company: String): String!
-  userDetails: User!
   users(search: String): [User!]!
-  blogDetails: Blog!
   blogs(search: String): [Blog!]!
   comments: [Comment!]!
 }
@@ -17,6 +15,11 @@ type Mutation {
   createComment(data: createCommentInput): Comment!
   updateComment(id: ID!, data: updateCommentInput!): Comment!
   deleteComment(id: ID!): Comment!
+}
+
+type Subscription {
+  count: Int!
+  comment(blogId: ID!): Comment!
 }
 
 input createUserInput {

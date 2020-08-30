@@ -9,7 +9,7 @@ const Mutation = {
 
     const user = {
       id: nanoid(),
-      ...args,
+      ...args.data,
     };
 
     db.users.push(user);
@@ -76,7 +76,7 @@ const Mutation = {
 
     const blog = {
       id: nanoid(),
-      ...args,
+      ...args.data,
     };
 
     db.blogs.push(blog);
@@ -97,7 +97,7 @@ const Mutation = {
       if (typeof data.body === "string") {
         blog.body = data.body;
       }
-      if (typeof data.published === "string") {
+      if (typeof data.published === "boolean") {
         blog.published = data.published;
       }
     }
@@ -119,7 +119,7 @@ const Mutation = {
     return deletedBlogs[0];
   },
 
-  createComment(parent, args, { db }, info) {
+  createComment(parent, args, { db, pubsub }, info) {
     const checkUser = db.users.some((user) => user.id === args.data.author);
 
     const checkBlog = db.blogs.some(
@@ -132,8 +132,12 @@ const Mutation = {
 
     const comment = {
       id: nanoid(),
-      ...args,
+      ...args.data,
     };
+
+    console.log(comment);
+
+    pubsub.publish(`comment ${args.data.blog}`, { comment });
 
     return comment;
   },

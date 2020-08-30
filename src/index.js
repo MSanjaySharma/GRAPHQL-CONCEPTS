@@ -1,10 +1,24 @@
 import { GraphQLServer } from "graphql-yoga";
 
-import { resolvers } from "./resolvers";
+import db from "./db";
+import Query from "./resolvers/Query";
+import Mutation from "./resolvers/Mutation";
+import User from "./resolvers/User";
+import Blog from "./resolvers/Blog";
+import Comment from "./resolvers/Comment";
 
 const server = new GraphQLServer({
   typeDefs: "./src/schema.graphql",
-  resolvers,
+  resolvers: {
+    Query,
+    Mutation,
+    User,
+    Blog,
+    Comment,
+  },
+  context: {
+    db,
+  },
 });
 
 const port = 4000;

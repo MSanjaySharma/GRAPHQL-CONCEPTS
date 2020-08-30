@@ -1,11 +1,11 @@
 // user data
-export let users = [
+const users = [
   { id: "id_1", name: "aBc", email: "abc@gmail.com", age: 3 },
   { id: "id_2", name: "pQr", email: "pqr@gmail.com" },
   { id: "id_3", name: "xYz", email: "xyz@gmail.com" },
 ];
 
-export let blogs = [
+const blogs = [
   {
     id: "blog_1",
     title: "Football legends",
@@ -29,7 +29,7 @@ export let blogs = [
   },
 ];
 
-export let comments = [
+const comments = [
   { id: "comment_1", text: "awesome blog!!!", author: "id_3", blog: "blog_2" },
   { id: "comment_2", text: "improve needed", author: "id_2", blog: "blog_1" },
   { id: "comment_3", text: "I had a doubt", author: "id_1", blog: "blog_3" },
@@ -40,3 +40,11 @@ export let comments = [
     blog: "blog_2",
   },
 ];
+
+const db = {
+  users,
+  blogs,
+  comments,
+};
+
+export { db as default };

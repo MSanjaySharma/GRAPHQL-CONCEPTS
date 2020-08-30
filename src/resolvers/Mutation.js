@@ -84,6 +84,34 @@ const Mutation = {
     return blog;
   },
 
+  updateBlog(parent, args, { db }, info) {
+    const { id, data } = args;
+    const blog = db.blogs.find((blog) => blog.id === id);
+
+    if (!blog) {
+      throw new Error("No Such blog exists");
+    } else {
+      if (typeof data.title === "string") {
+        blog.title = data.title;
+      }
+      if (typeof data.body === "string") {
+        blog.body = data.body;
+      }
+      if (typeof data.published === "string") {
+        blog.published = data.published;
+      }
+      if (typeof data.author === "string") {
+        const user = db.users.find((user) => user.id === data.author);
+        if (!user) {
+          throw new Error("No such user exists to Update the blog");
+        }
+        blog.author = data.author;
+      }
+    }
+
+    return blog;
+  },
+
   deleteBlog(parent, args, { db }, info) {
     const blogIndex = db.blogs.findIndex((blog) => blog.id === args.id);
 
@@ -113,6 +141,40 @@ const Mutation = {
       id: nanoid(),
       ...args,
     };
+
+    return comment;
+  },
+
+  updateComment(parent, args, { db }, info) {
+    const { id, data } = args;
+    const comment = db.comments.find((comment) => comment.id === id);
+
+    console.log(comment);
+
+    if (!comment) {
+      throw new Error("No such comments exists");
+    }
+
+    if (typeof data.text === "string") {
+      comment.text = data.text;
+    }
+
+    if (typeof data.author === "string") {
+      const user = db.users.find((user) => user.id === data.author);
+
+      if (!user) {
+        throw new Error("No such user exists to Update the comment");
+      }
+      comment.author = data.author;
+    }
+
+    if (typeof data.blog === "string") {
+      const blog = db.blogs.find((blog) => blog.id === data.blog);
+      if (!blog) {
+        throw new Error("No such blog exists to Update the comment");
+      }
+      comment.blog = data.blog;
+    }
 
     return comment;
   },

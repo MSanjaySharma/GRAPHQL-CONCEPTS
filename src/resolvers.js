@@ -55,11 +55,13 @@ export const resolvers = {
         return `Hello !!!`;
       }
     },
+
     add(parent, args, ctx, info) {
       if (args.a && args.b) {
         return args.a + args.b;
       }
     },
+
     addArray(parent, args, ctx, info) {
       if (args.nums.length === 0) {
         return 0;
@@ -69,9 +71,11 @@ export const resolvers = {
         });
       }
     },
+
     grades(parent, args, ctx, info) {
       return [99, 88, 67];
     },
+
     users(parent, args, ctx, info) {
       if (!args.search) {
         return users;
@@ -81,6 +85,7 @@ export const resolvers = {
         });
       }
     },
+
     userDetails(parent, args, ctx, info) {
       return {
         id: "userId_1",
@@ -89,6 +94,7 @@ export const resolvers = {
         age: 31,
       };
     },
+
     blogs(parent, args, ctx, info) {
       if (!args.search) {
         return blogs;
@@ -99,6 +105,7 @@ export const resolvers = {
         });
       }
     },
+
     blogDetails(parent, args, ctx, info) {
       return {
         id: "blogId_1",
@@ -107,6 +114,7 @@ export const resolvers = {
         published: false,
       };
     },
+
     comments(parent, args, ctx, info) {
       return comments;
     },
@@ -131,6 +139,7 @@ export const resolvers = {
 
       return user;
     },
+
     deleteUser(parent, args, ctx, info) {
       const userIndex = users.findIndex((user) => user.id === args.id);
 
@@ -154,6 +163,7 @@ export const resolvers = {
 
       return deletedUsers[0];
     },
+
     createBlog(parent, args, ctx, info) {
       const checkUser = users.some((user) => user.id === args.author);
 
@@ -173,6 +183,21 @@ export const resolvers = {
 
       return blog;
     },
+
+    deleteBlog(parent, args, ctx, info) {
+      const blogIndex = blogs.findIndex((blog) => blog.id === args.id);
+
+      if (blogIndex === -1) {
+        throw new Error("Blog not found");
+      }
+
+      const deletedBlogs = blogs.splice(blogIndex, 1);
+
+      comments = comments.filter((comment) => comment.blog !== args.id);
+
+      return deletedBlogs[0];
+    },
+
     createComment(parent, args, ctx, info) {
       const checkUser = users.some((user) => user.id === args.data.author);
       const checkBlog = blogs.some(
@@ -192,6 +217,8 @@ export const resolvers = {
 
       return comment;
     },
+
+    deleteComment(parent, args, ctx, info) {},
   },
 
   //REFERENCES
@@ -201,6 +228,7 @@ export const resolvers = {
         return user.id === parent.author;
       });
     },
+
     comments(parent, args, ctx, info) {
       return comments.filter((comment) => {
         return comment.blog === parent.id;
@@ -213,6 +241,7 @@ export const resolvers = {
         return blog.author === parent.id;
       });
     },
+
     comments(parent, args, ctx, info) {
       return comments.filter((comment) => {
         return comment.author === parent.id;
@@ -225,6 +254,7 @@ export const resolvers = {
         return user.id === parent.author;
       });
     },
+
     blog(parent, arg, ctx, info) {
       return blogs.find((blog) => {
         return blog.id === parent.blog;

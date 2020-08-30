@@ -19,7 +19,9 @@ export const typeDefs = `
         createUser(data: createUserInput): User!
         deleteUser(id: ID!): User!
         createBlog(data: createBlogInput): Blog!
+        deleteBlog(id: ID!): Blog!
         createComment(data: createCommentInput): Comment!
+        deleteComment(id: ID!): Comment!
     }
 
     input createUserInput {

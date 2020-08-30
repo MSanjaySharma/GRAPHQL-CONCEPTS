@@ -1,5 +1,48 @@
-import { users, blogs, comments } from "./datasets";
+//import { users, blogs, comments } from "./datasets";
 import { nanoid } from "nanoid";
+
+// user data
+let users = [
+  { id: "id_1", name: "aBc", email: "abc@gmail.com", age: 3 },
+  { id: "id_2", name: "pQr", email: "pqr@gmail.com" },
+  { id: "id_3", name: "xYz", email: "xyz@gmail.com" },
+];
+
+let blogs = [
+  {
+    id: "blog_1",
+    title: "Football legends",
+    body: "7 vs 13 it is!!!",
+    published: false,
+    author: "id_2",
+  },
+  {
+    id: "blog_2",
+    title: "Alpha treatment",
+    body: "A breakthrough in cancer treatment",
+    published: false,
+    author: "id_3",
+  },
+  {
+    id: "blog_3",
+    title: "Programming for everybody",
+    body: "Learn the right way",
+    published: false,
+    author: "id_1",
+  },
+];
+
+let comments = [
+  { id: "comment_1", text: "awesome blog!!!", author: "id_3", blog: "blog_2" },
+  { id: "comment_2", text: "improve needed", author: "id_2", blog: "blog_1" },
+  { id: "comment_3", text: "I had a doubt", author: "id_1", blog: "blog_3" },
+  {
+    id: "comment_4",
+    text: "This is a comment",
+    author: "id_1",
+    blog: "blog_2",
+  },
+];
 
 //resolvers
 export const resolvers = {
@@ -87,6 +130,29 @@ export const resolvers = {
       users.push(user);
 
       return user;
+    },
+    deleteUser(parent, args, ctx, info) {
+      const userIndex = users.findIndex((user) => user.id === args.id);
+
+      if (userIndex === -1) {
+        throw new Error("User not found");
+      }
+
+      const deletedUsers = users.splice(userIndex, 1);
+
+      blogs = blogs.filter((blog) => {
+        const match = blog.author === args.id;
+
+        if (match) {
+          comments = comments.filter((comment) => comment.blog !== blog.id);
+        }
+
+        return !match;
+      });
+
+      comments = comments.filter((comment) => comment.author !== args.id);
+
+      return deletedUsers[0];
     },
     createBlog(parent, args, ctx, info) {
       const checkUser = users.some((user) => user.id === args.author);

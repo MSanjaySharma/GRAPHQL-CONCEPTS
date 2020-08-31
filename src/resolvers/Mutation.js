@@ -67,8 +67,10 @@ const Mutation = {
     return deletedUsers[0];
   },
 
-  createBlog(parent, args, { db }, info) {
-    const checkUser = db.users.some((user) => user.id === args.author);
+  createBlog(parent, args, { db, pubsub }, info) {
+    const { title, body, published, author } = args.data;
+
+    const checkUser = db.users.some((user) => user.id === author);
 
     if (!checkUser) {
       throw new Error(`Invalid User`);
@@ -81,12 +83,17 @@ const Mutation = {
 
     db.blogs.push(blog);
 
+    if (published) {
+      pubsub.publish("blog", { blog: { mutation: "CREATED", data: blog } });
+    }
+
     return blog;
   },
 
-  updateBlog(parent, args, { db }, info) {
+  updateBlog(parent, args, { db, pubsub }, info) {
     const { id, data } = args;
     const blog = db.blogs.find((blog) => blog.id === id);
+    const originalBlog = { ...blog };
 
     if (!blog) {
       throw new Error("No Such blog exists");
@@ -99,24 +106,43 @@ const Mutation = {
       }
       if (typeof data.published === "boolean") {
         blog.published = data.published;
+
+        if (originalBlog.published && !blog.published) {
+          pubsub.publish("blog", {
+            blog: { mutation: "DELETED", data: originalBlog },
+          });
+        } else if (!originalBlog.published && blog.published) {
+          pubsub.publish("blog", {
+            blog: { mutation: "CREATED", data: blog },
+          });
+        } else if (blog.published) {
+          //updated
+          pubsub.publish("blog", {
+            blog: { mutation: "UPDATED", data: blog },
+          });
+        }
       }
     }
 
     return blog;
   },
 
-  deleteBlog(parent, args, { db }, info) {
+  deleteBlog(parent, args, { db, pubsub }, info) {
     const blogIndex = db.blogs.findIndex((blog) => blog.id === args.id);
 
     if (blogIndex === -1) {
       throw new Error("Blog not found");
     }
 
-    const deletedBlogs = db.blogs.splice(blogIndex, 1);
+    const [blog] = db.blogs.splice(blogIndex, 1);
 
     db.comments = db.comments.filter((comment) => comment.blog !== args.id);
 
-    return deletedBlogs[0];
+    if (blog.published) {
+      pubsub.publish("blog", { blog: { mutation: "DELETED", data: blog } });
+    }
+
+    return blog;
   },
 
   createComment(parent, args, { db, pubsub }, info) {
@@ -135,18 +161,18 @@ const Mutation = {
       ...args.data,
     };
 
-    console.log(comment);
+    db.comments.push(comment);
 
-    pubsub.publish(`comment ${args.data.blog}`, { comment });
+    pubsub.publish(`comment ${args.data.blog}`, {
+      comment: { mutation: "CREATED", data: comment },
+    });
 
     return comment;
   },
 
-  updateComment(parent, args, { db }, info) {
+  updateComment(parent, args, { db, pubsub }, info) {
     const { id, data } = args;
     const comment = db.comments.find((comment) => comment.id === id);
-
-    console.log(comment);
 
     if (!comment) {
       throw new Error("No such comments exists");
@@ -154,10 +180,14 @@ const Mutation = {
 
     comment.text = data.text;
 
+    pubsub.publish(`comment ${comment.blog}`, {
+      comment: { mutation: "UPDATED", data: comment },
+    });
+
     return comment;
   },
 
-  deleteComment(parent, args, { db }, info) {
+  deleteComment(parent, args, { db, pubsub }, info) {
     const commentIndex = db.comments.findIndex(
       (comment) => comment.id === args.id
     );
@@ -166,9 +196,13 @@ const Mutation = {
       throw new Error("Comment not found");
     }
 
-    const deletedComments = db.comments.splice(commentIndex, 1);
+    const [deletedComment] = db.comments.splice(commentIndex, 1);
 
-    return deletedComments[0];
+    pubsub.publish(`comment ${deletedComment.blog}`, {
+      comment: { mutation: "DELETED", data: deletedComment },
+    });
+
+    return deletedComment;
   },
 };
 

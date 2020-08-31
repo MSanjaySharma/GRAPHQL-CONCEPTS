@@ -24,7 +24,7 @@ const blogs = [
     id: "blog_3",
     title: "Programming for everybody",
     body: "Learn the right way",
-    published: true,
+    published: false,
     author: "id_1",
   },
 ];

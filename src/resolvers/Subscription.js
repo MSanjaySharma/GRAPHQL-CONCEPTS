@@ -1,19 +1,4 @@
 const Subscription = {
-  count: {
-    subscribe(parent, args, { pubsub }, info) {
-      let count = 0;
-
-      setInterval(() => {
-        count++;
-        pubsub.publish("count", {
-          count,
-        });
-      }, 1000);
-
-      return pubsub.asyncIterator("count");
-    },
-  },
-
   comment: {
     subscribe(parent, { blogId }, { db, pubsub }, info) {
       const blog = db.blogs.find(
@@ -25,6 +10,12 @@ const Subscription = {
       }
 
       return pubsub.asyncIterator(`comment ${blogId}`);
+    },
+  },
+
+  blog: {
+    subscribe(parent, args, { pubsub }, info) {
+      return pubsub.asyncIterator("blog");
     },
   },
 };
